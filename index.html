@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AI-powered image upscaler tool for enhancing image quality in real-time. Upscale your images by 2x, 4x, or 8x with advanced AI models.">
+  <meta name="keywords" content="image upscaler, AI upscaler, ai image upscaler,img upscaler,hd image upscaler,free image upscaler,free image enhancer,free image enhancement, free AI image enhancement, hd image enhancement,free image enhancement, photo enhancement, real-time upscaling">
+  <meta name="author" content="Pranesh">
+  <title>AI Image Upscaler - Enhance Your Photos Instantly</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <!-- Preloader -->
+  <div id="preloader">
+    <div class="spinner"></div>
+    <p>Processing your image...</p>
+  </div>
+
+  <!-- Header Section -->
+  <header class="header">
+    <h1>AI Image Upscaler</h1>
+    <p>Enhance your images instantly with our advanced AI technology.</p>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <section class="upload-section">
+      <h2>Upload Your Image</h2>
+      <form id="upscaler-form">
+        <label for="image-upload" class="file-label">
+          <span>Choose an Image</span>
+          <input type="file" id="image-upload" accept="image/*" required>
+        </label>
+        <label for="scale-level">Select Upscale Level:</label>
+        <select id="scale-level" name="scale-level">
+          <option value="2x">2x</option>
+          <option value="4x">4x</option>
+          <option value="8x">8x</option>
+        </select>
+        <button type="submit" class="btn-primary">Upscale Image</button>
+      </form>
+      <div id="result-container">
+        <h3>Result</h3>
+        <img id="upscaled-image" alt="Upscaled Image" class="result-image">
+        <a id="download-link" download="upscaled-image.png" style="display: none;" class="btn-secondary">Download Image</a>
+      </div>
+    </section>
+
+    <!-- Advertisement Section -->
+    <section class="ad-section">
+      <div id="adsense-ad-1">
+        <!-- Google AdSense Code -->
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_ADSENSE_ID" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-YOUR_ADSENSE_ID"
+             data-ad-slot="YOUR_AD_SLOT_ID"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="footer">
+    <p>&copy; 2025 AI Image Upscaler. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // JavaScript for Dynamic Functionality
+    document.getElementById('upscaler-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const fileInput = document.getElementById('image-upload');
+      const scaleLevel = document.getElementById('scale-level').value;
+
+      if (!fileInput.files.length) return;
+
+      const formData = new FormData();
+      formData.append('image', fileInput.files[0]);
+      formData.append('scaleLevel', scaleLevel);
+
+      try {
+        // Show preloader
+        document.getElementById('preloader').style.display = 'flex';
+
+        const response = await fetch('/upscale', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) throw new Error('Failed to upscale image.');
+
+        const blob = await response.blob();
+        const imageUrl = URL.createObjectURL(blob);
+
+        const upscaledImage = document.getElementById('upscaled-image');
+        const downloadLink = document.getElementById('download-link');
+
+        upscaledImage.src = imageUrl;
+        downloadLink.href = imageUrl;
+        downloadLink.style.display = 'block';
+
+        // Add animation to result container
+        document.getElementById('result-container').classList.add('fade-in');
+      } catch (error) {
+        alert('An error occurred while upscaling the image.');
+      } finally {
+        // Hide preloader
+        document.getElementById('preloader').style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
